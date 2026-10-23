@@ -1,0 +1,38 @@
+# TPM-CoS configuration. Copy to your working folder and edit.
+tpm:
+  name: "Your Name"
+  timezone: "America/Los_Angeles"
+
+storage:
+  adapter: local                      # local | gdrive | onedrive | s3
+  root: "~/TPM-CoS/programs"          # used when adapter is local
+  mirror: "~/TPM-CoS/programs"        # local folder every tool reads when the adapter is a cloud drive
+  gdrive: {root_folder_id: "", credentials: "~/.tpm-cos/gdrive-credentials.json"}
+  onedrive: {root: "TPM-CoS/programs", token_env: ONEDRIVE_ACCESS_TOKEN}   # or client_id + tenant for device sign-in
+  s3: {bucket: "", prefix: "tpm-cos/programs", region: ""}
+
+approvals:
+  outbound_default: draft_then_approve   # never auto-post unless a job opts in
+  connectors: read_only
+
+brain:
+  root: "~/TPM-CoS/brain"
+  inbox_review: weekly
+
+chief_of_staff:
+  daily_brief_time: "08:30"            # weekdays
+  weekly_review: "FRI 15:00"
+  max_brief_items: 5
+  briefs_dir: "~/TPM-CoS/briefs"
+
+mentor:
+  root: "~/TPM-CoS/mentor"
+  weekly_summary: "FRI 16:00"
+  visibility: private                  # never exposed to Slack or program agents
+
+scheduler:
+  command: ["claude", "-p", "{prompt}"]   # headless runner for Claude jobs
+  cwd: "~/TPM-CoS"                        # folder holding programs/, brain/, mentor/
+  timeout_minutes: 30
+  before_meeting_minutes: 60
+  disabled: []                            # job keys to switch off, e.g. ["cos/portfolio-digest"]

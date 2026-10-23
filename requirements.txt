@@ -1,0 +1,2 @@
+pyyaml>=6.0
+croniter>=2.0
